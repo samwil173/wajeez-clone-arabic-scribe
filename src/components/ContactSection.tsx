@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
-import { MapPin, Phone, Mail } from "lucide-react";
+import { Phone, Mail } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -54,18 +54,13 @@ const ContactSection = () => {
     {
       icon: <Phone className="h-6 w-6 text-primary" />,
       title: "اتصل بنا",
-      details: ["+213 512 345 678", "+213 598 765 432"],
+      details: ["يمكنك الاتصال بنا عبر نموذج الاتصال"],
     },
     {
       icon: <Mail className="h-6 w-6 text-primary" />,
       title: "راسلنا",
-      details: ["info@tawseel.dz", "support@tawseel.dz"],
-    },
-    {
-      icon: <MapPin className="h-6 w-6 text-primary" />,
-      title: "موقعنا",
-      details: ["شارع محمد الخامس", "الجزائر العاصمة، الجزائر"],
-    },
+      details: ["info@tawseel.dz"],
+    }
   ];
 
   return (
