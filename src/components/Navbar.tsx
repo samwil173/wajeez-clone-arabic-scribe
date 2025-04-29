@@ -10,7 +10,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
+import { Menu, Truck } from "lucide-react";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,20 +27,7 @@ const Navbar = () => {
       <div className="container flex items-center justify-between py-4">
         <Link to="/" className="flex items-center gap-2">
           <div className="bg-primary p-2 rounded-md text-white">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              className="lucide lucide-truck"
-              viewBox="0 0 24 24"
-            >
-              <path d="M10 17h4V5H2v12h3M20 17h2v-6l-4-6h-3v12h3M14 9h4M5 17a2 2 0 104 0 2 2 0 00-4 0zM17 17a2 2 0 104 0 2 2 0 00-4 0z"></path>
-            </svg>
+            <Truck className="h-6 w-6" />
           </div>
           <span className="text-xl font-bold text-primary">توصيل</span>
         </Link>
