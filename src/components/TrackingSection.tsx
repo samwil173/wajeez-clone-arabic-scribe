@@ -66,6 +66,23 @@ const TrackingSection = () => {
     }, 1500);
   };
 
+  const handleContactDriver = () => {
+    toast("جاري الاتصال", {
+      description: "سيتم الاتصال بالسائق خلال لحظات",
+      action: {
+        label: "إلغاء",
+        onClick: () => toast("تم إلغاء الاتصال"),
+      },
+    });
+  };
+
+  const handleTrackOnMap = () => {
+    window.open(`/track?id=${trackingNumber}`, '_blank');
+    toast("فتح الخريطة", {
+      description: "تم فتح صفحة التتبع على الخريطة",
+    });
+  };
+
   return (
     <section className="py-16 bg-white" id="tracking">
       <div className="container">
@@ -84,7 +101,12 @@ const TrackingSection = () => {
               onChange={(e) => setTrackingNumber(e.target.value)}
               className="text-lg py-6"
             />
-            <Button type="submit" size="lg" disabled={isLoading}>
+            <Button 
+              type="submit" 
+              size="lg" 
+              disabled={isLoading} 
+              className="bg-rose-600 hover:bg-rose-700"
+            >
               {isLoading ? "جاري البحث..." : "تتبع"}
             </Button>
           </form>
@@ -92,7 +114,7 @@ const TrackingSection = () => {
           <div className="mt-4 text-center text-sm text-gray-500">
             مثال: <Button 
               variant="link" 
-              className="p-0 h-auto text-primary" 
+              className="p-0 h-auto text-rose-600" 
               onClick={() => setTrackingNumber("DLV123456789")}
             >
               DLV123456789
@@ -113,7 +135,7 @@ const TrackingSection = () => {
                 <Button 
                   variant="outline"
                   size="sm"
-                  onClick={() => window.open(`/track?id=${trackingNumber}`, '_blank')}
+                  onClick={handleTrackOnMap}
                 >
                   <MapPin className="h-4 w-4 ml-2" />
                   تتبع على الخريطة
@@ -127,7 +149,7 @@ const TrackingSection = () => {
                       <div
                         className={`w-10 h-10 rounded-full flex items-center justify-center ${
                           step.completed
-                            ? "bg-primary"
+                            ? "bg-rose-600"
                             : "bg-gray-200"
                         }`}
                       >
@@ -141,7 +163,7 @@ const TrackingSection = () => {
                         <div
                           className={`w-1 h-16 mx-auto ${
                             step.completed && trackingSteps[index + 1].completed
-                              ? "bg-primary"
+                              ? "bg-rose-600"
                               : "bg-gray-200"
                           }`}
                         ></div>
@@ -150,15 +172,15 @@ const TrackingSection = () => {
                     <div className="pt-1">
                       <h4
                         className={`font-bold ${
-                          step.completed ? "text-primary" : "text-gray-500"
+                          step.completed ? "text-rose-600" : "text-gray-500"
                         }`}
                       >
                         {step.title}
                       </h4>
                       <p className="text-sm text-gray-600">{step.time}</p>
                       {index === 2 && step.completed && (
-                        <div className="mt-2 bg-primary-50 p-2 rounded-md flex items-center">
-                          <Truck className="h-4 w-4 text-primary ml-2" />
+                        <div className="mt-2 bg-rose-50 p-2 rounded-md flex items-center">
+                          <Truck className="h-4 w-4 text-rose-600 ml-2" />
                           <span className="text-sm">السائق في الطريق إليك - 15 دقيقة متبقية</span>
                         </div>
                       )}
@@ -184,7 +206,12 @@ const TrackingSection = () => {
                       <p className="text-sm text-gray-600">رقم السائق: 12345</p>
                     </div>
                   </div>
-                  <Button>تواصل مع السائق</Button>
+                  <Button 
+                    className="bg-rose-600 hover:bg-rose-700"
+                    onClick={handleContactDriver}
+                  >
+                    تواصل مع السائق
+                  </Button>
                 </div>
               </div>
             </CardContent>

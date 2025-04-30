@@ -18,7 +18,8 @@ import {
   User, 
   Settings, 
   Globe, 
-  CreditCard 
+  CreditCard,
+  Heart
 } from "lucide-react";
 
 const Navbar = () => {
@@ -35,12 +36,12 @@ const Navbar = () => {
     <nav className="sticky top-0 bg-white shadow-sm z-50">
       <div className="container flex items-center justify-between py-4">
         <Link to="/" className="flex items-center gap-2">
-          <div className="bg-primary p-2 rounded-md text-white">
-            <Truck className="h-6 w-6" />
+          <div className="bg-rose-500 p-2 rounded-md text-white">
+            <Heart className="h-6 w-6" />
           </div>
           <div className="flex flex-col">
-            <span className="text-xl font-bold text-primary">توصيل</span>
-            <span className="text-xs text-gray-500">Delivered Fast, Delivered with a Smile!</span>
+            <span className="text-xl font-bold text-rose-600">حنيني</span>
+            <span className="text-xs text-gray-500">توصيل بسرعة، توصيل بابتسامة!</span>
           </div>
         </Link>
         
@@ -50,7 +51,7 @@ const Navbar = () => {
             <Link
               key={item.path}
               to={item.path}
-              className="flex items-center gap-2 text-gray-700 hover:text-primary transition-colors font-medium"
+              className="flex items-center gap-2 text-gray-700 hover:text-rose-600 transition-colors font-medium"
             >
               {item.icon}
               <span>{item.name}</span>
@@ -59,11 +60,18 @@ const Navbar = () => {
         </div>
         
         <div className="hidden md:flex items-center gap-4">
-          <Button variant="outline" className="flex items-center gap-2">
+          <Button 
+            variant="outline" 
+            className="flex items-center gap-2"
+            onClick={() => alert("تم تفعيل تغيير اللغة")}
+          >
             <Globe className="h-4 w-4" />
             <span>العربية</span>
           </Button>
-          <Button className="flex items-center gap-2">
+          <Button 
+            className="flex items-center gap-2 bg-rose-600 hover:bg-rose-700"
+            onClick={() => window.location.href = "/track"}
+          >
             <Truck className="h-4 w-4" />
             <span>طلب توصيل</span>
           </Button>
@@ -78,9 +86,12 @@ const Navbar = () => {
           </SheetTrigger>
           <SheetContent side="right" className="w-[250px] sm:w-[300px]">
             <SheetHeader>
-              <SheetTitle className="text-right">القائمة</SheetTitle>
+              <SheetTitle className="text-right flex items-center justify-end gap-2">
+                <span className="text-rose-600">حنيني</span>
+                <Heart className="h-5 w-5 text-rose-600" />
+              </SheetTitle>
               <SheetDescription className="text-right">
-                Delivered Fast, Delivered with a Smile!
+                توصيل بسرعة، توصيل بابتسامة!
               </SheetDescription>
             </SheetHeader>
             <div className="flex flex-col gap-4 mt-6">
@@ -89,18 +100,28 @@ const Navbar = () => {
                   key={item.path}
                   to={item.path}
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-3 text-right py-2 text-gray-700 hover:text-primary transition-colors"
+                  className="flex items-center gap-3 text-right py-2 text-gray-700 hover:text-rose-600 transition-colors"
                 >
                   {item.icon}
                   <span>{item.name}</span>
                 </Link>
               ))}
               <hr className="my-2" />
-              <Button variant="outline" className="w-full flex items-center justify-center gap-2">
+              <Button 
+                variant="outline" 
+                className="w-full flex items-center justify-center gap-2"
+                onClick={() => alert("تم تفعيل تغيير اللغة")}
+              >
                 <Globe className="h-4 w-4" />
                 <span>العربية</span>
               </Button>
-              <Button className="w-full flex items-center justify-center gap-2">
+              <Button 
+                className="w-full flex items-center justify-center gap-2 bg-rose-600 hover:bg-rose-700"
+                onClick={() => {
+                  setIsOpen(false);
+                  window.location.href = "/track";
+                }}
+              >
                 <Truck className="h-4 w-4" />
                 <span>طلب توصيل</span>
               </Button>

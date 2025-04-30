@@ -8,9 +8,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Truck, Package, AlertTriangle, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { toast } from "@/components/ui/sonner";
 
 const TrackPage = () => {
   const [trackingId, setTrackingId] = useState<string | null>(null);
+  const [mapLoaded, setMapLoaded] = useState(false);
   const location = useLocation();
 
   // استخراج معرف التتبع من عنوان URL
@@ -22,11 +24,96 @@ const TrackPage = () => {
     }
   }, [location]);
 
+  // تهيئة خريطة جوجل عند عرض التفاصيل
+  useEffect(() => {
+    if (trackingId && window.google && !mapLoaded) {
+      try {
+        // مركز الخريطة (الرياض، السعودية)
+        const riyadhCenter = { lat: 24.7136, lng: 46.6753 };
+        const destinationPoint = { lat: 24.7220, lng: 46.6900 };
+        
+        // العثور على عنصر iframe وإنشاء الخريطة
+        const mapElement = document.getElementById("tracking-map");
+        
+        if (mapElement) {
+          const map = new window.google.maps.Map(mapElement, {
+            center: riyadhCenter,
+            zoom: 13,
+            mapTypeControl: false,
+          });
+          
+          // إضافة علامة للمستخدم (نقطة الوصول)
+          new window.google.maps.Marker({
+            position: destinationPoint,
+            map: map,
+            icon: {
+              path: window.google.maps.SymbolPath.CIRCLE,
+              scale: 10,
+              fillColor: "#22c55e",
+              fillOpacity: 1,
+              strokeColor: "#ffffff",
+              strokeWeight: 2,
+            },
+            title: "موقع التسليم",
+          });
+          
+          // إضافة علامة متحركة للسائق
+          new window.google.maps.Marker({
+            position: riyadhCenter,
+            map: map,
+            icon: {
+              url: "https://maps.google.com/mapfiles/ms/icons/truck.png",
+              scaledSize: new window.google.maps.Size(40, 40),
+            },
+            title: "سائق التوصيل",
+          });
+          
+          // إنشاء خط المسار بين نقطة البداية ونقطة الوصول
+          const deliveryPath = new window.google.maps.Polyline({
+            path: [riyadhCenter, destinationPoint],
+            geodesic: true,
+            strokeColor: "#e11d48",
+            strokeOpacity: 0.8,
+            strokeWeight: 4,
+          });
+          
+          deliveryPath.setMap(map);
+          
+          setMapLoaded(true);
+        }
+      } catch (error) {
+        console.error("خطأ في تحميل الخريطة:", error);
+      }
+    }
+  }, [trackingId, mapLoaded]);
+
+  const handleTrackSubmit = () => {
+    if (!trackingId) {
+      toast("خطأ", {
+        description: "الرجاء إدخال رقم التتبع",
+      });
+      return;
+    }
+    
+    // إعادة تحميل الصفحة مع معرف التتبع الجديد
+    window.location.href = `/track?id=${trackingId}`;
+  };
+
+  const handleSupportAction = (action: string) => {
+    toast("طلب المساعدة", {
+      description: `تم استلام طلبك: ${action}. سيتم التواصل معك قريباً.`,
+      action: {
+        label: "حسناً",
+        onClick: () => {},
+      },
+    });
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1">
-        <div className="bg-gradient-to-l from-primary-50 to-white py-12">
+        <div className="bg-gradient-to-l from-rose-50 to-white py-12">
           <div className="container">
             <h1 className="text-4xl font-bold mb-4">تتبع طلبك</h1>
             <p className="text-lg text-gray-700">
@@ -39,7 +126,7 @@ const TrackPage = () => {
           <div className="container py-10">
             <div className="flex items-center justify-between mb-8">
               <div className="flex items-center gap-4">
-                <div className="bg-primary text-white p-3 rounded-full">
+                <div className="bg-rose-600 text-white p-3 rounded-full">
                   <Truck className="h-6 w-6" />
                 </div>
                 <div>
@@ -47,7 +134,10 @@ const TrackPage = () => {
                   <p className="text-gray-600">تم استلام طلبك وجاري العمل على توصيله</p>
                 </div>
               </div>
-              <Button variant="outline" onClick={() => setTrackingId(null)}>
+              <Button 
+                variant="outline" 
+                onClick={() => setTrackingId(null)}
+              >
                 تتبع طلب آخر
               </Button>
             </div>
@@ -57,7 +147,7 @@ const TrackPage = () => {
               <Card className="md:col-span-2">
                 <CardContent className="p-6">
                   <h3 className="text-lg font-bold mb-4 flex items-center">
-                    <Package className="ml-2 h-5 w-5 text-primary" />
+                    <Package className="ml-2 h-5 w-5 text-rose-600" />
                     تفاصيل الطلب
                   </h3>
                   
@@ -104,24 +194,40 @@ const TrackPage = () => {
               <Card>
                 <CardContent className="p-6">
                   <h3 className="text-lg font-bold mb-4 flex items-center">
-                    <AlertTriangle className="ml-2 h-5 w-5 text-primary" />
+                    <AlertTriangle className="ml-2 h-5 w-5 text-rose-600" />
                     مساعدة
                   </h3>
                   
                   <div className="space-y-4">
-                    <Button variant="outline" className="w-full justify-start">
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start"
+                      onClick={() => handleSupportAction("لدي مشكلة في طلبي")}
+                    >
                       لدي مشكلة في طلبي
                     </Button>
                     
-                    <Button variant="outline" className="w-full justify-start">
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start"
+                      onClick={() => handleSupportAction("تغيير موعد التسليم")}
+                    >
                       تغيير موعد التسليم
                     </Button>
                     
-                    <Button variant="outline" className="w-full justify-start">
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start"
+                      onClick={() => handleSupportAction("تغيير عنوان التسليم")}
+                    >
                       تغيير عنوان التسليم
                     </Button>
                     
-                    <Button variant="outline" className="w-full justify-start">
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start"
+                      onClick={() => handleSupportAction("إلغاء الطلب")}
+                    >
                       إلغاء الطلب
                     </Button>
                   </div>
@@ -132,11 +238,9 @@ const TrackPage = () => {
             {/* خريطة التتبع */}
             <div className="mt-8">
               <h3 className="text-xl font-bold mb-6">تتبع مباشر</h3>
-              <iframe
-                title="Live Tracking Map"
+              <div
+                id="tracking-map"
                 className="w-full h-[400px] rounded-lg border border-gray-200"
-                style={{ background: "url('/placeholder.svg') center/cover" }}
-                src="about:blank"
               />
             </div>
           </div>
@@ -146,8 +250,8 @@ const TrackPage = () => {
               <Card className="max-w-xl mx-auto">
                 <CardContent className="p-8">
                   <div className="text-center mb-6">
-                    <div className="bg-primary/10 inline-flex p-3 rounded-full mb-4">
-                      <Search className="h-6 w-6 text-primary" />
+                    <div className="bg-rose-600/10 inline-flex p-3 rounded-full mb-4">
+                      <Search className="h-6 w-6 text-rose-600" />
                     </div>
                     <h2 className="text-2xl font-bold">أدخل رقم التتبع</h2>
                     <p className="text-gray-600 mt-2">
@@ -165,8 +269,8 @@ const TrackPage = () => {
                     </div>
                     
                     <Button 
-                      className="w-full py-6 text-lg"
-                      onClick={() => trackingId && setTrackingId(trackingId)}
+                      className="w-full py-6 text-lg bg-rose-600 hover:bg-rose-700"
+                      onClick={handleTrackSubmit}
                       disabled={!trackingId}
                     >
                       تتبع الطلب
