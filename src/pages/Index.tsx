@@ -3,8 +3,11 @@ import Hero from "@/components/Hero";
 import Services from "@/components/Services";
 import HowItWorks from "@/components/HowItWorks";
 import PricingSection from "@/components/PricingSection";
-import TrackingSection from "@/components/TrackingSection";
+import MapTracking from "@/components/MapTracking";
 import ContactSection from "@/components/ContactSection";
+import PaymentOptions from "@/components/PaymentOptions";
+import DriverExperience from "@/components/DriverExperience";
+import MultiLanguage from "@/components/MultiLanguage";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -16,8 +19,11 @@ const Index = () => {
         <Hero />
         <Services />
         <HowItWorks />
+        <MapTracking />
+        <PaymentOptions />
         <PricingSection />
-        <TrackingSection />
+        <DriverExperience />
+        <MultiLanguage />
         <ContactSection />
       </main>
       <Footer />

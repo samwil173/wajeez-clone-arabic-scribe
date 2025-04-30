@@ -10,16 +10,25 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Menu, Truck } from "lucide-react";
+import { 
+  Menu, 
+  Truck, 
+  Home, 
+  ShoppingBag, 
+  User, 
+  Settings, 
+  Globe, 
+  CreditCard 
+} from "lucide-react";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   
   const navItems = [
-    { name: "الرئيسية", path: "/" },
-    { name: "خدماتنا", path: "/services" },
-    { name: "تتبع الطلب", path: "/track" },
-    { name: "اتصل بنا", path: "/contact" },
+    { name: "الرئيسية", path: "/", icon: <Home className="h-5 w-5" /> },
+    { name: "الطلبات", path: "/orders", icon: <ShoppingBag className="h-5 w-5" /> },
+    { name: "الملف الشخصي", path: "/profile", icon: <User className="h-5 w-5" /> },
+    { name: "الإعدادات", path: "/settings", icon: <Settings className="h-5 w-5" /> },
   ];
 
   return (
@@ -29,7 +38,10 @@ const Navbar = () => {
           <div className="bg-primary p-2 rounded-md text-white">
             <Truck className="h-6 w-6" />
           </div>
-          <span className="text-xl font-bold text-primary">توصيل</span>
+          <div className="flex flex-col">
+            <span className="text-xl font-bold text-primary">توصيل</span>
+            <span className="text-xs text-gray-500">Delivered Fast, Delivered with a Smile!</span>
+          </div>
         </Link>
         
         {/* Desktop Navigation */}
@@ -38,16 +50,23 @@ const Navbar = () => {
             <Link
               key={item.path}
               to={item.path}
-              className="text-gray-700 hover:text-primary transition-colors font-medium"
+              className="flex items-center gap-2 text-gray-700 hover:text-primary transition-colors font-medium"
             >
-              {item.name}
+              {item.icon}
+              <span>{item.name}</span>
             </Link>
           ))}
         </div>
         
         <div className="hidden md:flex items-center gap-4">
-          <Button variant="outline">تسجيل الدخول</Button>
-          <Button>طلب توصيل</Button>
+          <Button variant="outline" className="flex items-center gap-2">
+            <Globe className="h-4 w-4" />
+            <span>العربية</span>
+          </Button>
+          <Button className="flex items-center gap-2">
+            <Truck className="h-4 w-4" />
+            <span>طلب توصيل</span>
+          </Button>
         </div>
         
         {/* Mobile Navigation */}
@@ -61,7 +80,7 @@ const Navbar = () => {
             <SheetHeader>
               <SheetTitle className="text-right">القائمة</SheetTitle>
               <SheetDescription className="text-right">
-                اختر وجهتك من القائمة
+                Delivered Fast, Delivered with a Smile!
               </SheetDescription>
             </SheetHeader>
             <div className="flex flex-col gap-4 mt-6">
@@ -70,14 +89,21 @@ const Navbar = () => {
                   key={item.path}
                   to={item.path}
                   onClick={() => setIsOpen(false)}
-                  className="text-right py-2 text-gray-700 hover:text-primary transition-colors"
+                  className="flex items-center gap-3 text-right py-2 text-gray-700 hover:text-primary transition-colors"
                 >
-                  {item.name}
+                  {item.icon}
+                  <span>{item.name}</span>
                 </Link>
               ))}
               <hr className="my-2" />
-              <Button variant="outline" className="w-full">تسجيل الدخول</Button>
-              <Button className="w-full">طلب توصيل</Button>
+              <Button variant="outline" className="w-full flex items-center justify-center gap-2">
+                <Globe className="h-4 w-4" />
+                <span>العربية</span>
+              </Button>
+              <Button className="w-full flex items-center justify-center gap-2">
+                <Truck className="h-4 w-4" />
+                <span>طلب توصيل</span>
+              </Button>
             </div>
           </SheetContent>
         </Sheet>
