@@ -1,10 +1,7 @@
-
 import { Button } from "@/components/ui/button";
 import { Truck } from "lucide-react";
-
 const Hero = () => {
-  return (
-    <div className="bg-gradient-to-l from-primary-50 to-white py-12 md:py-20">
+  return <div className="bg-gradient-to-l from-primary-50 to-white py-12 md:py-20">
       <div className="container grid md:grid-cols-2 gap-8 items-center">
         <div className="order-2 md:order-1 animate-fade-in">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight">
@@ -24,15 +21,9 @@ const Hero = () => {
           </div>
         </div>
         <div className="order-1 md:order-2 flex justify-center">
-          <img
-            src="/placeholder.svg"
-            alt="خدمة التوصيل"
-            className="max-h-[350px] w-auto object-cover rounded-lg shadow-lg"
-          />
+          <img alt="خدمة التوصيل" className="max-h-[350px] w-auto object-cover rounded-lg shadow-lg" src="/lovable-uploads/6883d300-8ed9-4dd5-89ae-9da0cba7694b.png" />
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Hero;
